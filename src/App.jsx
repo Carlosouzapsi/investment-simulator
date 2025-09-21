@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Login from "./components/Login/Login.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import Portfolio from "./components/Portfolio/Portfolio.jsx";
+import AssetsList from "./components/AssetsList/AssetsList.jsx";
 import { useState } from "react";
 import styles from "./App.module.css"; // Importa o CSS Module
 
@@ -12,7 +13,7 @@ function App() {
   const [currentView, setCurrentView] = useState(
     isLoggedIn ? "dashboard" : "login"
   );
-  // const [selectedAsset, setSelectedAssert] = useState(null);
+  const [selectedAsset, setSelectedAsset] = useState(null);
   const [userPortfolio, setUserPortfolio] = useState(() => {
     const savedPortfolio = localStorage.getItem("userPortfolio");
     // Return saved portfolio or default values:
@@ -52,12 +53,29 @@ function App() {
     setCurrentView("login");
   };
 
+  const handleSelectAsset = (asset) => {
+    setSelectedAsset(asset);
+    // setCurrentView('buy');
+  };
+
+  const handleSelectAssetForDetails = (asset) => {
+    setSelectedAsset(asset);
+    // setCurrentView("details");
+  };
+
   const renderView = () => {
     switch (currentView) {
       case "login":
         return <Login onLogin={handleLogin} />;
       case "dashboard":
         return <Dashboard userPortfolio={userPortfolio} />;
+      case "assets":
+        return (
+          <AssetsList
+            onSelectAsset={handleSelectAsset}
+            onSelectAssetForDetails={handleSelectAssetForDetails}
+          />
+        );
       case "portfolio":
         return <Portfolio userPortfolio={userPortfolio} />;
       default:
@@ -76,6 +94,13 @@ function App() {
                 currentView === "dashboard" ? "active" : ""
               }}`}>
               Dashboard
+            </button>
+            <button
+              onClick={() => setCurrentView("assets")}
+              className={`btn btn-filter ${
+                currentView === "assets" ? "active" : ""
+              }`}>
+              Consultar Ativos
             </button>
             <button
               onClick={() => setCurrentView("portfolio")}

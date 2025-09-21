@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container h2 {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.filterGroup {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+}
+
+.actionsCell {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.textSuccess {
+  color: #10b981;
+}
+.textDanger {
+  color: #ef4444;
+}
