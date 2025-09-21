@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ArrowIcon from "../ArrowIcon/ArrowIcon";
 import styles from "./AssetsList.module.css";
 
 const mockAssets = [
@@ -49,8 +50,8 @@ function AssetsList({ onSelectAsset, onSelectAssetForDetails }) {
   const [assets, setAssets] = useState(() =>
     mockAssets.map((a) => ({
       ...a,
-      previousPrice: a.previousPrice,
-      openingPrice: a.openingPrice,
+      previousPrice: a.price,
+      openingPrice: a.price,
       priceHistory: [a.price],
     }))
   );
@@ -90,17 +91,20 @@ function AssetsList({ onSelectAsset, onSelectAssetForDetails }) {
       <div className={styles.filterGroup}>
         <button
           onClick={() => setFilter("Todos")}
-          className={`btn btn-filter ${filter === "Todos" ? "active" : ""}`}>
+          className={`btn btn-filter ${filter === "Todos" ? "active" : ""}`}
+        >
           Todos
         </button>
         <button
           onClick={() => setFilter("Ações")}
-          className={`btn btn-filter ${filter === "Ações" ? "active" : ""}`}>
+          className={`btn btn-filter ${filter === "Ações" ? "active" : ""}`}
+        >
           Ações
         </button>
         <button
           onClick={() => setFilter("FIIs")}
-          className={`btn btn-filter ${filter === "FIIs" ? "active" : ""}`}>
+          className={`btn btn-filter ${filter === "FIIs" ? "active" : ""}`}
+        >
           Fundos Imobiliários
         </button>
       </div>
@@ -132,9 +136,11 @@ function AssetsList({ onSelectAsset, onSelectAssetForDetails }) {
                   <td className="font-medium">{asset.ticker}</td>
                   <td>{asset.name}</td>
                   <td>{asset.type}</td>
-                  <td className={`${priceClass} font bold`}></td>
-                  <td>{asset.price.toFixed(2)}</td>
-                  {/* <td>{asset.openingPrice.toFixed(2)}</td> */}
+                  <td className={`${priceClass} font-bold`}>
+                    {asset.price.toFixed(2)}
+                    {arrowDirection && <ArrowIcon direction={arrowDirection} />}
+                  </td>
+                  <td>{asset.openingPrice.toFixed(2)}</td>
                   <td>
                     <div className={styles.actionsCell}>
                       <button
@@ -143,7 +149,8 @@ function AssetsList({ onSelectAsset, onSelectAssetForDetails }) {
                         style={{
                           padding: "0.25rem 0.5rem",
                           fontSize: "0.75rem",
-                        }}>
+                        }}
+                      >
                         Detalhes
                       </button>
                       <button
@@ -152,7 +159,8 @@ function AssetsList({ onSelectAsset, onSelectAssetForDetails }) {
                         style={{
                           padding: "0.25rem 0.5rem",
                           fontSize: "0.75rem",
-                        }}>
+                        }}
+                      >
                         Comprar
                       </button>
                     </div>

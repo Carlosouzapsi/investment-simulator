@@ -3,6 +3,7 @@ import Login from "./components/Login/Login.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import Portfolio from "./components/Portfolio/Portfolio.jsx";
 import AssetsList from "./components/AssetsList/AssetsList.jsx";
+import BuyForm from "./components/BuyForm/BuyForm.jsx";
 import { useState } from "react";
 import styles from "./App.module.css"; // Importa o CSS Module
 
@@ -55,12 +56,21 @@ function App() {
 
   const handleSelectAsset = (asset) => {
     setSelectedAsset(asset);
-    // setCurrentView('buy');
+    setCurrentView("buy");
   };
 
   const handleSelectAssetForDetails = (asset) => {
     setSelectedAsset(asset);
     // setCurrentView("details");
+  };
+
+  const handleBuyConfirm = (asset, quantity) => {
+    const cost = asset.price * quantity;
+    if (userPortfolio.balance >= cost) {
+      const newBalance = userPortfolio.balance - cost;
+      const newHoldings = { ...userPortfolio.holdings };
+      const existingHolding = newHoldings[asset.ticker];
+    }
   };
 
   const renderView = () => {
@@ -74,6 +84,14 @@ function App() {
           <AssetsList
             onSelectAsset={handleSelectAsset}
             onSelectAssetForDetails={handleSelectAssetForDetails}
+          />
+        );
+      case "buy":
+        return (
+          <BuyForm
+            asset={selectedAsset}
+            onBuyConfirm={handleBuyConfirm}
+            onBack={() => setCurrentView("assets")}
           />
         );
       case "portfolio":
@@ -92,21 +110,24 @@ function App() {
               onClick={() => setCurrentView("dashboard")}
               className={`btn btn-filter ${
                 currentView === "dashboard" ? "active" : ""
-              }}`}>
+              }}`}
+            >
               Dashboard
             </button>
             <button
               onClick={() => setCurrentView("assets")}
               className={`btn btn-filter ${
                 currentView === "assets" ? "active" : ""
-              }`}>
+              }`}
+            >
               Consultar Ativos
             </button>
             <button
               onClick={() => setCurrentView("portfolio")}
               className={`btn btn-filter ${
                 currentView === "portfolio" ? "active" : ""
-              }`}>
+              }`}
+            >
               Minha Carteira
             </button>
             <button onClick={handleLogout} className="btn btn-danger">
