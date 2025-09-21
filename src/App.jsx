@@ -21,7 +21,7 @@ function App() {
     return savedPortfolio
       ? JSON.parse(savedPortfolio)
       : {
-          balance: 1000.0,
+          balance: 10000.0,
           holdings: {},
           transactionHistory: [],
         };
@@ -70,7 +70,45 @@ function App() {
       const newBalance = userPortfolio.balance - cost;
       const newHoldings = { ...userPortfolio.holdings };
       const existingHolding = newHoldings[asset.ticker];
+      if (existingHolding) {
+        existingHolding.quantity += quantity;
+        existingHolding.totalCost += cost;
+      } else {
+        newHoldings[asset.ticker] = {
+          ...asset,
+          quantity: quantity,
+          totalCost: cost,
+        };
+      }
+
+      const newTransaction = {
+        type: "Compra",
+        asset: asset.ticker,
+        quantity: quantity,
+        price: asset.price,
+        cost: cost,
+        date: new Date().toLocaleDateString("pt-BR"),
+      };
+
+      setUserPortfolio({
+        balance: newBalance,
+        holdings: newHoldings,
+        transactionHistory: [
+          ...userPortfolio.transactionHistory,
+          newTransaction,
+        ],
+      });
+
+      setCurrentView("dashboard");
+      return true;
     }
+    return false;
+  };
+
+  const handleSellConfirm = (asset, quantity) => {
+    const revenue = asset.price * quantity;
+    const newHoldings = { ...userPortfolio.holdings };
+    // parei aqui
   };
 
   const renderView = () => {

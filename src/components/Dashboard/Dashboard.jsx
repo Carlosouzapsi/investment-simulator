@@ -21,7 +21,6 @@ function Dashboard({ userPortfolio }) {
 
   const renderHoldingsSummary = () => {
     const holdingsArray = Object.values(userPortfolio.holdings);
-    console.log(holdingsArray);
     if (holdingsArray.length === 0) {
       return (
         <p className={`${styles.textCenter} ${styles.textMuted}`}>
@@ -59,6 +58,9 @@ function Dashboard({ userPortfolio }) {
       <div className={styles.dashboardGrid}>
         <div className={styles.dashboardCard}>
           <h3>Saldo Atual</h3>
+          <p className={styles.textPrimary}>
+            R$ {userPortfolio.balance.toFixed(2)}
+          </p>
         </div>
         <div className={styles.dashboardCard}>
           <h3>Retorno Total da Carteira</h3>
