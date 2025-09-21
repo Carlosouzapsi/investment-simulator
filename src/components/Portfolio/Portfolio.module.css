@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container h2 {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.textSuccess {
+  color: #10b981;
+}
+.textDanger {
+  color: #ef4444;
+}
+.textMuted {
+  color: #6b7280;
+}
+.textCenter {
+  text-align: center;
+}
+
+.actionsCell {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.backButton {
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 24rem;
+}
