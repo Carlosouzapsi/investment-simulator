@@ -4,8 +4,10 @@ import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import Portfolio from "./components/Portfolio/Portfolio.jsx";
 import AssetsList from "./components/AssetsList/AssetsList.jsx";
 import BuyForm from "./components/BuyForm/BuyForm.jsx";
+import TransactionHistory from "./components/TransactionHistory/TransactionHistory.jsx";
 import { useState } from "react";
 import styles from "./App.module.css"; // Importa o CSS Module
+import SellForm from "./components/SellForm/SellForm.jsx";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -59,9 +61,14 @@ function App() {
     setCurrentView("buy");
   };
 
+  const handleSelectAssetForSell = (asset) => {
+    setSelectedAsset(asset);
+    setCurrentView("sell");
+  };
+
   const handleSelectAssetForDetails = (asset) => {
     setSelectedAsset(asset);
-    // setCurrentView("details");
+    setCurrentView("details");
   };
 
   const handleBuyConfirm = (asset, quantity) => {
@@ -109,6 +116,43 @@ function App() {
     const revenue = asset.price * quantity;
     const newHoldings = { ...userPortfolio.holdings };
     // parei aqui
+    const existingHolding = newHoldings[asset.ticker];
+
+    if (existingHolding && existingHolding.quantity >= quantity) {
+      const originalQuantity = existingHolding.quantity;
+      existingHolding.quantity -= quantity;
+
+      const avgCost = existingHolding.totalCost / originalQuantity;
+      existingHolding.totalCost -= avgCost * quantity;
+
+      if (existingHolding.quantity <= 0.0001) {
+        delete newHoldings[asset.ticker];
+      }
+
+      const newBalance = userPortfolio.balance + revenue;
+
+      const newTransaction = {
+        type: "Venda",
+        asset: asset.ticker,
+        quantity: quantity,
+        price: asset.price,
+        cost: -revenue,
+        date: new Date().toLocaleDateString("pt-BR"),
+      };
+
+      setUserPortfolio({
+        balance: newBalance,
+        holdings: newHoldings,
+        transactionHistory: [
+          ...userPortfolio.transactionHistory,
+          newTransaction,
+        ],
+      });
+
+      setCurrentView("dashboard");
+      return true;
+    }
+    return false;
   };
 
   const renderView = () => {
@@ -132,8 +176,28 @@ function App() {
             onBack={() => setCurrentView("assets")}
           />
         );
+      case "history":
+        return (
+          <TransactionHistory
+            transactionHistory={userPortfolio.transactionHistory}
+          />
+        );
       case "portfolio":
-        return <Portfolio userPortfolio={userPortfolio} />;
+        return (
+          <Portfolio
+            userPortfolio={userPortfolio}
+            onSell={handleSelectAssetForSell}
+            onBack={() => setCurrentView("dashboard")}
+          />
+        );
+      case "sell":
+        return (
+          <SellForm
+            asset={selectedAsset}
+            onSellConfirm={handleSellConfirm}
+            onBack={() => setCurrentView("portfolio")}
+          />
+        );
       default:
         return <Dashboard userPortfolio={userPortfolio} />;
     }
@@ -148,25 +212,29 @@ function App() {
               onClick={() => setCurrentView("dashboard")}
               className={`btn btn-filter ${
                 currentView === "dashboard" ? "active" : ""
-              }}`}
-            >
+              }}`}>
               Dashboard
             </button>
             <button
               onClick={() => setCurrentView("assets")}
               className={`btn btn-filter ${
                 currentView === "assets" ? "active" : ""
-              }`}
-            >
+              }`}>
               Consultar Ativos
             </button>
             <button
               onClick={() => setCurrentView("portfolio")}
               className={`btn btn-filter ${
                 currentView === "portfolio" ? "active" : ""
-              }`}
-            >
+              }`}>
               Minha Carteira
+            </button>
+            <button
+              onClick={() => setCurrentView("history")}
+              className={`btn btn-filter ${
+                currentView === "history" ? "active" : ""
+              }`}>
+              Histórico
             </button>
             <button onClick={handleLogout} className="btn btn-danger">
               Sair
