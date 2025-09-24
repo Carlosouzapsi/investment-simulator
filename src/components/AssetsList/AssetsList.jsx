@@ -91,20 +91,17 @@ function AssetsList({ onSelectAsset, onSelectAssetForDetails }) {
       <div className={styles.filterGroup}>
         <button
           onClick={() => setFilter("Todos")}
-          className={`btn btn-filter ${filter === "Todos" ? "active" : ""}`}
-        >
+          className={`btn btn-filter ${filter === "Todos" ? "active" : ""}`}>
           Todos
         </button>
         <button
           onClick={() => setFilter("Ações")}
-          className={`btn btn-filter ${filter === "Ações" ? "active" : ""}`}
-        >
+          className={`btn btn-filter ${filter === "Ações" ? "active" : ""}`}>
           Ações
         </button>
         <button
           onClick={() => setFilter("FIIs")}
-          className={`btn btn-filter ${filter === "FIIs" ? "active" : ""}`}
-        >
+          className={`btn btn-filter ${filter === "FIIs" ? "active" : ""}`}>
           Fundos Imobiliários
         </button>
       </div>
@@ -149,8 +146,7 @@ function AssetsList({ onSelectAsset, onSelectAssetForDetails }) {
                         style={{
                           padding: "0.25rem 0.5rem",
                           fontSize: "0.75rem",
-                        }}
-                      >
+                        }}>
                         Detalhes
                       </button>
                       <button
@@ -159,8 +155,7 @@ function AssetsList({ onSelectAsset, onSelectAssetForDetails }) {
                         style={{
                           padding: "0.25rem 0.5rem",
                           fontSize: "0.75rem",
-                        }}
-                      >
+                        }}>
                         Comprar
                       </button>
                     </div>

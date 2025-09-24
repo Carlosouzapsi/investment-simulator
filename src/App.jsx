@@ -3,6 +3,7 @@ import Login from "./components/Login/Login.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import Portfolio from "./components/Portfolio/Portfolio.jsx";
 import AssetsList from "./components/AssetsList/AssetsList.jsx";
+import AssetsDetails from "./components/AssetsDetails/AssetsDetails.jsx";
 import BuyForm from "./components/BuyForm/BuyForm.jsx";
 import TransactionHistory from "./components/TransactionHistory/TransactionHistory.jsx";
 import { useState } from "react";
@@ -182,10 +183,18 @@ function App() {
             transactionHistory={userPortfolio.transactionHistory}
           />
         );
+      case "details":
+        return (
+          <AssetsDetails
+            asset={selectedAsset}
+            onBack={() => setCurrentView("assets")}
+          />
+        );
       case "portfolio":
         return (
           <Portfolio
             userPortfolio={userPortfolio}
+            onBuy={handleSelectAsset}
             onSell={handleSelectAssetForSell}
             onBack={() => setCurrentView("dashboard")}
           />
