@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Dashboard.module.css";
 // import styles from "Dashboard.module.css";
-function Dashboard({ userPortfolio }) {
+function Dashboard({ userPortfolio, currentUser }) {
   const currentPortfolioValue = Object.values(userPortfolio.holdings).reduce(
     (acc, holding) => acc + holding.price * holding.quantity,
     0
@@ -54,7 +54,10 @@ function Dashboard({ userPortfolio }) {
 
   return (
     <div className={styles.container}>
-      <h2>O seu Dashboard</h2>
+      {/* Mensagem de boas-vindas personalizada */}
+      <h2 className={styles.welcomeMessage}>
+        Olá, {currentUser ? currentUser.name : "Investidor"}!
+      </h2>
       <div className={styles.dashboardGrid}>
         <div className={styles.dashboardCard}>
           <h3>Saldo Atual</h3>

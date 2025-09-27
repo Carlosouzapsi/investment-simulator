@@ -11,9 +11,11 @@ import styles from "./App.module.css"; // Importa o CSS Module
 import SellForm from "./components/SellForm/SellForm.jsx";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    () => localStorage.getItem("isLoggedIn") === "true"
-  );
+  const [currentUser, setCurrentUser] = useState(() => {
+    const savedUser = localStorage.getItem("currentUser");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+  const [isLoggedIn, setIsLoggedIn] = useState(!!currentUser);
   const [currentView, setCurrentView] = useState(
     isLoggedIn ? "dashboard" : "login"
   );
@@ -35,17 +37,22 @@ function App() {
   }, [userPortfolio]);
 
   useEffect(() => {
-    localStorage.setItem("isLoggedIn", isLoggedIn);
-  }, [isLoggedIn]);
-
-  const handleLogin = (success) => {
-    if (success) {
+    if (currentUser) {
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
       setIsLoggedIn(true);
-      setCurrentView("dashboard");
+    } else {
+      localStorage.removeItem("currentUser");
+      setIsLoggedIn(false);
     }
+  }, [currentUser]);
+
+  const handleLogin = (userData) => {
+    setCurrentUser(userData);
+    setCurrentView("dashboard");
   };
 
   const handleLogout = () => {
+    setCurrentUser(null);
     setIsLoggedIn(false);
     localStorage.removeItem("userPortfolio");
     localStorage.removeItem("isLoggedIn");
@@ -161,7 +168,9 @@ function App() {
       case "login":
         return <Login onLogin={handleLogin} />;
       case "dashboard":
-        return <Dashboard userPortfolio={userPortfolio} />;
+        return (
+          <Dashboard userPortfolio={userPortfolio} currentUser={currentUser} />
+        );
       case "assets":
         return (
           <AssetsList
@@ -208,7 +217,9 @@ function App() {
           />
         );
       default:
-        return <Dashboard userPortfolio={userPortfolio} />;
+        return (
+          <Dashboard userPortfolio={userPortfolio} currentUser={currentUser} />
+        );
     }
   };
 
