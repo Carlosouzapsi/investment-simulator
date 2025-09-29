@@ -1,0 +1,46 @@
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: #2d3748;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  width: 100%;
+}
+
+.infoGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.infoGroup:last-child {
+  margin-bottom: 0;
+}
+
+.infoLabel {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.infoValue {
+  font-size: 1.125rem;
+  color: #1a202c;
+}

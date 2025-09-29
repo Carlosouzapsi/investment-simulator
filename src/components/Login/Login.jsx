@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import styles from "./Login.module.css";
+import { useNavigate } from "react-router-dom"; // 1. Importar useNavigate
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate(); // 2. Inicializar o hook de navegação
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,7 +49,8 @@ function Login({ onLogin }) {
         // eslint-disable-next-line no-unused-vars
         userData = await response.json();
       }
-      onLogin(userData);
+      onLogin(userData); // Atualiza o estado no App.jsx
+      navigate("/dashboard"); // 3. Redireciona para o dashboard
     } catch (err) {
       setError(err.message);
     } finally {

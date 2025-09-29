@@ -1,4 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+
+// Componentes importados:
 import Login from "./components/Login/Login.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import Portfolio from "./components/Portfolio/Portfolio.jsx";
@@ -6,19 +9,17 @@ import AssetsList from "./components/AssetsList/AssetsList.jsx";
 import AssetsDetails from "./components/AssetsDetails/AssetsDetails.jsx";
 import BuyForm from "./components/BuyForm/BuyForm.jsx";
 import TransactionHistory from "./components/TransactionHistory/TransactionHistory.jsx";
-import { useState } from "react";
 import styles from "./App.module.css"; // Importa o CSS Module
 import SellForm from "./components/SellForm/SellForm.jsx";
-
+import Profile from "./components/Profile/Profile.jsx";
+import MainLayout from "./components/MainLayout/MainLayout.jsx";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 function App() {
   const [currentUser, setCurrentUser] = useState(() => {
     const savedUser = localStorage.getItem("currentUser");
     return savedUser ? JSON.parse(savedUser) : null;
   });
   const [isLoggedIn, setIsLoggedIn] = useState(!!currentUser);
-  const [currentView, setCurrentView] = useState(
-    isLoggedIn ? "dashboard" : "login"
-  );
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [userPortfolio, setUserPortfolio] = useState(() => {
     const savedPortfolio = localStorage.getItem("userPortfolio");
@@ -31,6 +32,8 @@ function App() {
           transactionHistory: [],
         };
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.setItem("userPortfolio", JSON.stringify(userPortfolio));
@@ -48,7 +51,6 @@ function App() {
 
   const handleLogin = (userData) => {
     setCurrentUser(userData);
-    setCurrentView("dashboard");
   };
 
   const handleLogout = () => {
@@ -61,22 +63,22 @@ function App() {
       holdings: {},
       transactionHistory: [],
     });
-    setCurrentView("login");
+    navigate("/");
   };
 
   const handleSelectAsset = (asset) => {
     setSelectedAsset(asset);
-    setCurrentView("buy");
+    navigate("/buy");
   };
 
   const handleSelectAssetForSell = (asset) => {
     setSelectedAsset(asset);
-    setCurrentView("sell");
+    navigate("/sell");
   };
 
   const handleSelectAssetForDetails = (asset) => {
     setSelectedAsset(asset);
-    setCurrentView("details");
+    navigate("details");
   };
 
   const handleBuyConfirm = (asset, quantity) => {
@@ -114,7 +116,7 @@ function App() {
         ],
       });
 
-      setCurrentView("dashboard");
+      navigate("dashboard");
       return true;
     }
     return false;
@@ -123,7 +125,6 @@ function App() {
   const handleSellConfirm = (asset, quantity) => {
     const revenue = asset.price * quantity;
     const newHoldings = { ...userPortfolio.holdings };
-    // parei aqui
     const existingHolding = newHoldings[asset.ticker];
 
     if (existingHolding && existingHolding.quantity >= quantity) {
@@ -157,115 +158,34 @@ function App() {
         ],
       });
 
-      setCurrentView("dashboard");
+      navigate("portfolio");
       return true;
     }
     return false;
   };
 
-  const renderView = () => {
-    switch (currentView) {
-      case "login":
-        return <Login onLogin={handleLogin} />;
-      case "dashboard":
-        return (
-          <Dashboard userPortfolio={userPortfolio} currentUser={currentUser} />
-        );
-      case "assets":
-        return (
-          <AssetsList
-            onSelectAsset={handleSelectAsset}
-            onSelectAssetForDetails={handleSelectAssetForDetails}
-          />
-        );
-      case "buy":
-        return (
-          <BuyForm
-            asset={selectedAsset}
-            onBuyConfirm={handleBuyConfirm}
-            onBack={() => setCurrentView("assets")}
-          />
-        );
-      case "history":
-        return (
-          <TransactionHistory
-            transactionHistory={userPortfolio.transactionHistory}
-          />
-        );
-      case "details":
-        return (
-          <AssetsDetails
-            asset={selectedAsset}
-            onBack={() => setCurrentView("assets")}
-          />
-        );
-      case "portfolio":
-        return (
-          <Portfolio
-            userPortfolio={userPortfolio}
-            onBuy={handleSelectAsset}
-            onSell={handleSelectAssetForSell}
-            onBack={() => setCurrentView("dashboard")}
-          />
-        );
-      case "sell":
-        return (
-          <SellForm
-            asset={selectedAsset}
-            onSellConfirm={handleSellConfirm}
-            onBack={() => setCurrentView("portfolio")}
-          />
-        );
-      default:
-        return (
-          <Dashboard userPortfolio={userPortfolio} currentUser={currentUser} />
-        );
-    }
-  };
-
   return (
-    <div className={styles.appContainer}>
-      {isLoggedIn && (
-        <nav className={styles.appNav}>
-          <div className={styles.navLinks}>
-            <button
-              onClick={() => setCurrentView("dashboard")}
-              className={`btn btn-filter ${
-                currentView === "dashboard" ? "active" : ""
-              }}`}>
-              Dashboard
-            </button>
-            <button
-              onClick={() => setCurrentView("assets")}
-              className={`btn btn-filter ${
-                currentView === "assets" ? "active" : ""
-              }`}>
-              Consultar Ativos
-            </button>
-            <button
-              onClick={() => setCurrentView("portfolio")}
-              className={`btn btn-filter ${
-                currentView === "portfolio" ? "active" : ""
-              }`}>
-              Minha Carteira
-            </button>
-            <button
-              onClick={() => setCurrentView("history")}
-              className={`btn btn-filter ${
-                currentView === "history" ? "active" : ""
-              }`}>
-              Histórico
-            </button>
-            <button onClick={handleLogout} className="btn btn-danger">
-              Sair
-            </button>
-          </div>
-        </nav>
-      )}
-      <main className={styles.appMain}>
-        <div className={styles.mainContentWrapper}>{renderView()}</div>
-      </main>
-    </div>
+    <Routes>
+      {/* Rota pública de login */}
+      <Route path="/" element={<Login onLogin={handleLogin} />} />
+      {/* Rotas Protegidas dentro do Layout Principal */}
+      <Route
+        element={
+          <ProtectedRoute isLoggedIn={isLoggedIn}>
+            <MainLayout handleLogout={handleLogout} />
+          </ProtectedRoute>
+        }>
+        <Route
+          path="/dashboard"
+          element={
+            <Dashboard
+              userPortfolio={userPortfolio}
+              currentUser={currentUser}
+            />
+          }
+        />
+      </Route>
+    </Routes>
   );
 }
 
