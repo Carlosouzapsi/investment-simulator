@@ -32,27 +32,35 @@ function App() {
         interestRate: 0, // Taxa de juros média
       }
   );
-  const [gameDate, setGameDate] = useState({ day: 1, week: 1 });
+  const [gameDate, setGameDate] = useState({ day: 1, week: 1, month: 1 });
   const navigate = useNavigate();
 
-  // Game Loop para passagem de tempo e cobrança de juros
+  // Game Loop para passagem de tempo
   useEffect(() => {
     const gameTick = setInterval(() => {
       setGameDate((prevDate) => {
-        const newDay = prevDate.day + 1;
+        let newDay = prevDate.day + 1;
+        let newWeek = prevDate.week;
+        let newMonth = prevDate.month;
+
         if (newDay > 7) {
-          // Nova semana
-          return { day: 1, week: prevDate.week + 1 };
+          newDay = 1;
+          newWeek += 1;
         }
-        return { ...prevDate, day: newDay };
+        if (newWeek > 4) {
+          newWeek = 1;
+          newMonth += 1;
+        }
+        return { day: newDay, week: newWeek, month: newMonth };
       });
     }, 5000); // 5 segundos por dia
 
     return () => clearInterval(gameTick);
   }, []);
 
-  // Lógica de cobrança de juros
+  // Lógica de cobrança de juros e pagamento de proventos/dividendos
   useEffect(() => {
+    // Cobrança de Juros
     if (gameDate.day === 4 && userPortfolio.debt > 0) {
       const interest = userPortfolio.debt * (userPortfolio.interestRate / 100);
       setUserPortfolio((prev) => ({
@@ -72,6 +80,49 @@ function App() {
       }));
     }
   }, [gameDate.day]);
+
+  // Pagamento de Proventos e Dividendos
+  useEffect(() => {
+    if (gameDate.day !== 1 || gameDate.week !== 1) return; // Executa apenas no primeiro dia do mês
+
+    let totalPayout = 0;
+    const newTransactions = [];
+
+    Object.values(userPortfolio.holdings).forEach((holding) => {
+      if (holding.type === "FII") {
+        const payout = holding.totalCost * holding.yield;
+        totalPayout += payout;
+        newTransactions.push({
+          type: "Provento",
+          asset: holding.ticker,
+          quantity: holding.quantity,
+          price: payout / holding.quantity,
+          cost: payout,
+          date: new Date().toISOString(),
+        });
+      } else if (holding.type === "Ação" && gameDate.month % 2 === 0) {
+        // Paga dividendos a cada 2 meses
+        const payout = holding.totalCost * holding.yield;
+        totalPayout += payout;
+        newTransactions.push({
+          type: "Dividendo",
+          asset: holding.ticker,
+          quantity: holding.quantity,
+          price: payout / holding.quantity,
+          cost: payout,
+          date: new Date().toISOString(),
+        });
+      }
+    });
+
+    if (totalPayout > 0) {
+      setUserPortfolio((prev) => ({
+        ...prev,
+        balance: prev.balance + totalPayout,
+        transactionHistory: [...prev.transactionHistory, ...newTransactions],
+      }));
+    }
+  }, [gameDate.month]);
 
   useEffect(() => {
     localStorage.setItem("userPortfolio", JSON.stringify(userPortfolio));

@@ -9,6 +9,7 @@ const mockAssets = [
     name: "Petrobras",
     type: "Ação",
     price: 35.5,
+    yield: 0.01, // 1% de dividendo
     description:
       "Petrobras é uma empresa de energia de capital aberto e misto...",
   },
@@ -18,6 +19,7 @@ const mockAssets = [
     name: "Vale",
     type: "Ação",
     price: 68.2,
+    yield: 0.015, // 1.5% de dividendo
     description: "A Vale é uma mineradora multinacional brasileira...",
   },
   {
@@ -26,6 +28,7 @@ const mockAssets = [
     name: "Banco do Brasil",
     type: "Ação",
     price: 54.1,
+    yield: 0.012, // 1.2% de dividendo
     description: "O Banco do Brasil é uma instituição financeira brasileira...",
   },
   {
@@ -34,6 +37,7 @@ const mockAssets = [
     name: "Maxi Renda",
     type: "FII",
     price: 10.5,
+    yield: 0.008, // 0.8% de provento
     description: "O Fundo de Investimento Imobiliário Maxi Renda...",
   },
   {
@@ -42,6 +46,7 @@ const mockAssets = [
     name: "Kinea",
     type: "FII",
     price: 165.75,
+    yield: 0.007, // 0.7% de provento
     description: "O Fundo Imobiliário Kinea é um dos maiores fundos...",
   },
 ];

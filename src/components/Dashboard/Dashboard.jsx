@@ -58,13 +58,17 @@ function Dashboard({ userPortfolio, currentUser, gameDate }) {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1>Painel do Membro</h1>
-        <p>Bem-vindo de volta, {currentUser ? currentUser.name : "Investidor"}.</p>
+        <p>
+          Bem-vindo de volta, {currentUser ? currentUser.name : "Investidor"}.
+        </p>
       </div>
       <div className={styles.dashboardGrid}>
         <div className={styles.dashboardCard}>
           <h3>Data do Jogo</h3>
           <p className={styles.date}>
-            {gameDate ? `Semana ${gameDate.week}, Dia ${gameDate.day}` : 'Carregando...'}
+            {gameDate
+              ? `Semana ${gameDate.week}, Dia ${gameDate.day}`
+              : "Carregando..."}
           </p>
         </div>
         <div className={styles.dashboardCard}>
@@ -75,14 +79,13 @@ function Dashboard({ userPortfolio, currentUser, gameDate }) {
         </div>
         <div className={styles.dashboardCard}>
           <h3>Dívida Total</h3>
-          <p className={styles.debt}>
-            R$ {userPortfolio.debt.toFixed(2)}
-          </p>
+          {/* <p className={styles.debt}>R$ {userPortfolio.debt.toFixed(2)}</p> */}
         </div>
         <div className={styles.dashboardCard}>
           <h3>Resultado da Carteira</h3>
           <p className={returnColorClass}>
-            {returnSign} R$ {totalReturn.toFixed(2)} ({returnPercentage.toFixed(2)}%)
+            {returnSign} R$ {totalReturn.toFixed(2)} (
+            {returnPercentage.toFixed(2)}%)
           </p>
         </div>
         <div className={styles.dashboardCard}>
