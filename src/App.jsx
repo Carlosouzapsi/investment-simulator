@@ -4,6 +4,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 // Importar Componentes
 import Login from "./components/Login/Login.jsx";
 import SignUp from "./components/SignUp/SignUp.jsx";
+import Bank from "./components/Bank/Bank.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import AssetsList from "./components/AssetsList/AssetsList.jsx";
 import BuyForm from "./components/BuyForm/BuyForm.jsx";
@@ -27,9 +28,50 @@ function App() {
         balance: 10000.0,
         holdings: {},
         transactionHistory: [],
+        debt: 0, // Dívida total
+        interestRate: 0, // Taxa de juros média
       }
   );
+  const [gameDate, setGameDate] = useState({ day: 1, week: 1 });
   const navigate = useNavigate();
+
+  // Game Loop para passagem de tempo e cobrança de juros
+  useEffect(() => {
+    const gameTick = setInterval(() => {
+      setGameDate((prevDate) => {
+        const newDay = prevDate.day + 1;
+        if (newDay > 7) {
+          // Nova semana
+          return { day: 1, week: prevDate.week + 1 };
+        }
+        return { ...prevDate, day: newDay };
+      });
+    }, 5000); // 5 segundos por dia
+
+    return () => clearInterval(gameTick);
+  }, []);
+
+  // Lógica de cobrança de juros
+  useEffect(() => {
+    if (gameDate.day === 4 && userPortfolio.debt > 0) {
+      const interest = userPortfolio.debt * (userPortfolio.interestRate / 100);
+      setUserPortfolio((prev) => ({
+        ...prev,
+        balance: prev.balance - interest,
+        transactionHistory: [
+          ...prev.transactionHistory,
+          {
+            type: "Juros",
+            asset: "Pagamento de Juros",
+            quantity: 1,
+            price: interest,
+            cost: interest,
+            date: new Date().toISOString(),
+          },
+        ],
+      }));
+    }
+  }, [gameDate.day]);
 
   useEffect(() => {
     localStorage.setItem("userPortfolio", JSON.stringify(userPortfolio));
@@ -62,6 +104,34 @@ function App() {
 
   const handleUpdateUser = (updatedUserData) => {
     setCurrentUser(updatedUserData);
+  };
+
+  const handleLoan = (amount, rate) => {
+    setUserPortfolio((prev) => {
+      const newDebt = prev.debt + amount;
+      const newBalance = prev.balance + amount;
+      // Recalcula a taxa de juros média ponderada
+      const newInterestRate =
+        (prev.debt * prev.interestRate + amount * rate) / newDebt;
+
+      return {
+        ...prev,
+        balance: newBalance,
+        debt: newDebt,
+        interestRate: newInterestRate,
+        transactionHistory: [
+          ...prev.transactionHistory,
+          {
+            type: "Empréstimo",
+            asset: "Crédito Bancário",
+            quantity: 1,
+            price: amount,
+            cost: amount,
+            date: new Date().toISOString(),
+          },
+        ],
+      };
+    });
   };
 
   const handleSelectAsset = (asset) => {
@@ -179,6 +249,7 @@ function App() {
             <Dashboard
               userPortfolio={userPortfolio}
               currentUser={currentUser}
+              gameDate={gameDate}
             />
           }
         />
@@ -246,6 +317,10 @@ function App() {
               onBack={() => navigate("/assets")}
             />
           }
+        />
+        <Route
+          path="/bank"
+          element={<Bank onLoanRequest={handleLoan} />}
         />
       </Route>
     </Routes>

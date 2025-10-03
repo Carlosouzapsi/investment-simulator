@@ -39,18 +39,20 @@ function SellForm({ asset, onSellConfirm, onBack }) {
 
   return (
     <div className={styles.container}>
-      <h2>Vender {asset.name}</h2>
-      <p className={styles.assetInfo}>
-        Ticker: <strong>{asset.ticker}</strong>
-      </p>
-      <p className={styles.assetInfo}>
-        Preço por unidade: <strong>{asset.price.toFixed(2)}</strong>
-      </p>
-
+      <div className={styles.header}>
+        <h1>Ordem de Venda</h1>
+        <p>
+          {asset.name} ({asset.ticker})
+        </p>
+      </div>
+      <div className={styles.assetInfo}>
+        <span>Preço por Unidade</span>
+        <strong>R$ {asset.price.toFixed(2)}</strong>
+      </div>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
           <label className={styles.formLabel} htmlFor="quantity">
-            Quantidade (Máx: {maxQuantity})
+            Quantidade (Disponível: {maxQuantity})
           </label>
           <input
             id="quantity"
@@ -63,17 +65,21 @@ function SellForm({ asset, onSellConfirm, onBack }) {
           />
         </div>
         <div className={styles.totalRevenue}>
-          Valor à receber: R$ {totalRevenue}
+          <span>Receita Estimada</span>
+          <strong>R$ {totalRevenue}</strong>
         </div>
-        <div className="btn-group">
-          <button type="button" onClick={onBack} className="btn btn-secundary">
-            Voltar
+        <div className={styles.buttonGroup}>
+          <button
+            type="button"
+            onClick={onBack}
+            className={styles.backButton}>
+            Cancelar
           </button>
           <button
             type="submit"
             disabled={isLoading || quantity > maxQuantity || quantity < 1}
-            className="btn btn-danger">
-            {isLoading ? "A Vender..." : "Confirmar Venda"}
+            className={styles.confirmButton}>
+            {isLoading ? "Enviando Ordem..." : "Confirmar Venda"}
           </button>
         </div>
       </form>

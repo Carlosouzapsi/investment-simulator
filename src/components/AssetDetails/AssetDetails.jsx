@@ -10,38 +10,41 @@ function AssetDetails({ asset, onBack }) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2>
+        <h1>Ficha Técnica do Ativo</h1>
+        <p>
           {asset.name} ({asset.ticker})
-        </h2>
+        </p>
       </div>
       <div className={styles.contentGrid}>
-        <div className={styles.chartSection}>
-          <div className={styles.infoCard}>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>Preço Atual:</span>
-              <span className={styles.infoValue}>
-                R$ {asset.price.toFixed(2)}
-              </span>
-            </div>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>Preço de Abertura:</span>
-              <span className={styles.infoValue}>
-                R$ {asset.openingPrice.toFixed(2)}
-              </span>
-            </div>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>Tipo:</span>
-              <span className={styles.infoValue}>{asset.type}</span>
-            </div>
+        <div className={styles.infoCard}>
+          <div className={styles.infoItem}>
+            <span className={styles.infoLabel}>Preço Atual</span>
+            <span className={styles.infoValue}>R$ {asset.price.toFixed(2)}</span>
           </div>
-          <h3>Histórico Recente de Preços</h3>
-          <AssetChart data={asset.priceHistory} />
+          <div className={styles.infoItem}>
+            <span className={styles.infoLabel}>Abertura</span>
+            <span className={styles.infoValue}>
+              R$ {asset.openingPrice.toFixed(2)}
+            </span>
+          </div>
+          <div className={styles.infoItem}>
+            <span className={styles.infoLabel}>Tipo</span>
+            <span className={styles.infoValue}>{asset.type}</span>
+          </div>
+        </div>
+        <div className={styles.description}>
+          <h3>Sobre o Ativo</h3>
+          <p>{asset.description}</p>
+        </div>
+        <div className={styles.chartSection}>
+          <h3>Variação de Preço (Últimas 10 Atualizações)</h3>
+          <div className={styles.chartWrapper}>
+            <AssetChart data={asset.priceHistory} />
+          </div>
         </div>
       </div>
-      <button
-        onClick={onBack}
-        className={`btn btn-secondary ${styles.backButton}`}>
-        Voltar para a Lista de Ativos
+      <button onClick={onBack} className={styles.backButton}>
+        Voltar ao Mercado
       </button>
     </div>
   );

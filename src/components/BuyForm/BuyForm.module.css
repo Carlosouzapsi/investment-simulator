@@ -1,76 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato&display=swap');
+
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 28rem;
+  width: 100%;
+  max-width: 500px;
   margin: 0 auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
 }
 
-.container h2 {
-  font-size: 1.875rem;
-  font-weight: bold;
-  color: #2d3748;
-  margin-bottom: 0.5rem;
+.header {
   text-align: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 1.5rem;
+}
+
+.header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.header p {
+  font-family: 'Lato', sans-serif;
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
 }
 
 .assetInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Lato', sans-serif;
   font-size: 1rem;
-  color: #4a5568;
-  margin-bottom: 0.25rem;
-  text-align: center;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.assetInfo span {
+  color: #7f8c8d;
 }
 
 .assetInfo strong {
-  font-weight: 600;
+  font-weight: 700;
+  color: #2c3e50;
 }
 
 .form {
   width: 100%;
-  margin-top: 1.5rem;
 }
 
 .formGroup {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .formLabel {
   display: block;
-  color: #4a5568;
+  color: #7f8c8d;
+  font-family: 'Lato', sans-serif;
   font-weight: 600;
   margin-bottom: 0.5rem;
+  font-size: 0.9rem;
 }
 
 .formInput {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #cbd5e0;
-  border-radius: 0.5rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
   box-sizing: border-box;
+  font-family: 'Lato', sans-serif;
+  background-color: #ffffff;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  text-align: center;
 }
 
 .formInput:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+  border-color: #bda27e;
+  box-shadow: 0 0 0 3px rgba(189, 162, 126, 0.2);
 }
 
 .totalCost {
-  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  border-top: 2px solid #bda27e;
+  border-bottom: 2px solid #bda27e;
+}
+
+.totalCost span {
+  color: #7f8c8d;
+  font-family: 'Lato', sans-serif;
+  font-size: 1rem;
+}
+
+.totalCost strong {
+  color: #27ae60;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+}
+
+.backButton, .confirmButton {
+  all: unset;
+  box-sizing: border-box;
+  flex-grow: 1;
+  padding: 0.9rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
   text-align: center;
-  font-size: 1.125rem;
-  font-weight: bold;
-  color: #2d3748;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.backButton {
+  background-color: #ecf0f1;
+  color: #7f8c8d;
+  border: 2px solid #bdc3c7;
+}
+
+.backButton:hover {
+  background-color: #dce4e6;
+}
+
+.confirmButton {
+  background-color: #27ae60;
+  color: #ffffff;
+  border: 2px solid #27ae60;
+}
+
+.confirmButton:hover:not(:disabled) {
+  background-color: #229954;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.confirmButton:disabled {
+  background-color: #95a5a6;
+  border-color: #95a5a6;
+  cursor: not-allowed;
 }
 
 .formMessage {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   text-align: center;
   font-weight: 600;
+  font-family: 'Lato', sans-serif;
 }
 
 .textSuccess {
-  color: #10b981;
+  color: #27ae60;
 }
+
 .textDanger {
-  color: #ef4444;
+  color: #c0392b;
 }

@@ -87,21 +87,30 @@ function AssetsList({ onSelectAsset, onSelectAssetForDetails }) {
 
   return (
     <div className={styles.container}>
-      <h2>Ativos Disponíveis</h2>
+      <div className={styles.header}>
+        <h1>Mercado de Ativos</h1>
+        <p>Explore oportunidades e monte sua carteira.</p>
+      </div>
       <div className={styles.filterGroup}>
         <button
           onClick={() => setFilter("Todos")}
-          className={`btn btn-filter ${filter === "Todos" ? "active" : ""}`}>
+          className={`${styles.filterButton} ${
+            filter === "Todos" ? styles.activeFilter : ""
+          }`}>
           Todos
         </button>
         <button
           onClick={() => setFilter("Ações")}
-          className={`btn btn-filter ${filter === "Ações" ? "active" : ""}`}>
+          className={`${styles.filterButton} ${
+            filter === "Ações" ? styles.activeFilter : ""
+          }`}>
           Ações
         </button>
         <button
           onClick={() => setFilter("FIIs")}
-          className={`btn btn-filter ${filter === "FIIs" ? "active" : ""}`}>
+          className={`${styles.filterButton} ${
+            filter === "FIIs" ? styles.activeFilter : ""
+          }`}>
           Fundos Imobiliários
         </button>
       </div>
@@ -109,12 +118,12 @@ function AssetsList({ onSelectAsset, onSelectAssetForDetails }) {
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Ticker</th>
+              <th>Ativo</th>
               <th>Nome</th>
               <th>Tipo</th>
-              <th>Preço (R$)</th>
-              <th>Abertura (R$)</th>
-              <th className={styles.actionsHeader}>Ações</th>
+              <th>Preço Atual</th>
+              <th>Preço de Abertura</th>
+              <th className={styles.actionsHeader}>Negociar</th>
             </tr>
           </thead>
           <tbody>
@@ -143,20 +152,12 @@ function AssetsList({ onSelectAsset, onSelectAssetForDetails }) {
                     <div className={styles.actionsCell}>
                       <button
                         onClick={() => onSelectAssetForDetails(asset)}
-                        className="btn btn-secondary"
-                        style={{
-                          padding: "0.25rem 0.5rem",
-                          fontSize: "0.75rem",
-                        }}>
+                        className={styles.detailsButton}>
                         Detalhes
                       </button>
                       <button
                         onClick={() => onSelectAsset(asset)}
-                        className="btn btn-primary"
-                        style={{
-                          padding: "0.25rem 0.5rem",
-                          fontSize: "0.75rem",
-                        }}>
+                        className={styles.buyButton}>
                         Comprar
                       </button>
                     </div>

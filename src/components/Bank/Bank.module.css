@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato&display=swap');
+
+.container {
+  width: 100%;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.header p {
+  font-family: 'Lato', sans-serif;
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+.globalMessage {
+  text-align: center;
+  font-family: 'Lato', sans-serif;
+  font-weight: 600;
+  color: #27ae60;
+  background-color: #eafaf1;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.bankGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .bankGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .bankGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.bankCard {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.bankHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.bankLogo {
+  font-size: 2rem;
+}
+
+.bankHeader h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.interestRate {
+  font-family: 'Lato', sans-serif;
+  background-color: #f9f9f9;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #34495e;
+}
+
+.interestRate strong {
+  font-weight: 700;
+  color: #c0392b;
+}
+
+.inputGroup {
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.inputGroup label {
+  display: block;
+  color: #7f8c8d;
+  font-family: 'Lato', sans-serif;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.formInput {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-family: 'Lato', sans-serif;
+  background-color: #ffffff;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #bda27e;
+  box-shadow: 0 0 0 3px rgba(189, 162, 126, 0.2);
+}
+
+.submitButton {
+  all: unset;
+  display: block;
+  width: 100%;
+  padding: 0.9rem;
+  background-color: #2c3e50;
+  color: #ffffff;
+  text-align: center;
+  cursor: pointer;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #34495e;
+}
+
+.submitButton:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}

@@ -6,22 +6,23 @@ function TransactionHistory({ transactionHistory }) {
 
   return (
     <div className={styles.container}>
-      <h2>Histórico de Transações</h2>
+      <div className={styles.header}>
+        <h1>Livro de Registros</h1>
+        <p>O histórico de todas as suas operações no mercado.</p>
+      </div>
       {sortedHistory.length === 0 ? (
-        <p className={`${styles.textCenter} ${styles.textMuted}`}>
-          Nenhuma transação registada ainda.
-        </p>
+        <p className={styles.textMuted}>Nenhuma transação registrada.</p>
       ) : (
         <div className={styles.tableContainer}>
           <table className={styles.table}>
             <thead>
               <tr>
                 <th>Data</th>
-                <th>Tipo</th>
+                <th>Operação</th>
                 <th>Ativo</th>
                 <th>Quantidade</th>
-                <th>Preço (R$)</th>
-                <th>Custo total (R$)</th>
+                <th>Preço Unitário</th>
+                <th>Valor Total</th>
               </tr>
             </thead>
             <tbody>
@@ -38,8 +39,8 @@ function TransactionHistory({ transactionHistory }) {
                   </td>
                   <td className={styles.tickerCell}>{tx.asset}</td>
                   <td>{tx.quantity}</td>
-                  <td>{tx.price.toFixed(2)}</td>
-                  <td>{tx.cost.toFixed(2)}</td>
+                  <td>R$ {tx.price.toFixed(2)}</td>
+                  <td>R$ {tx.cost.toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>

@@ -38,6 +38,13 @@ function MainLayout({ handleLogout }) {
             Registros
           </NavLink>
           <NavLink
+            to="/bank"
+            className={({ isActive }) =>
+              `${styles.navLink} ${isActive ? styles.activeLink : ""}`
+            }>
+            Banco
+          </NavLink>
+          <NavLink
             to="/profile"
             className={({ isActive }) =>
               `${styles.navLink} ${isActive ? styles.activeLink : ""}`

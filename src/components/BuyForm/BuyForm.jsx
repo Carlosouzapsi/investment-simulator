@@ -35,13 +35,16 @@ function BuyForm({ asset, onBuyConfirm, onBack }) {
   const totalCost = (asset.price * quantity).toFixed(2);
   return (
     <div className={styles.container}>
-      <h2>Comprar {asset.name}</h2>
-      <p className={styles.assertInfo}>
-        Ticker: <strong>{asset.ticker}</strong>
-      </p>
-      <p className={styles.assertInfo}>
-        Preço por unidade: <strong>R$ {asset.price.toFixed(2)}</strong>
-      </p>
+      <div className={styles.header}>
+        <h1>Ordem de Compra</h1>
+        <p>
+          {asset.name} ({asset.ticker})
+        </p>
+      </div>
+      <div className={styles.assetInfo}>
+        <span>Preço por Unidade</span>
+        <strong>R$ {asset.price.toFixed(2)}</strong>
+      </div>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
           <label className={styles.formLabel} htmlFor="quantity">
@@ -56,26 +59,30 @@ function BuyForm({ asset, onBuyConfirm, onBack }) {
             className={styles.formInput}
           />
         </div>
-        <div className={styles.totalCost}>Custo Total: R$ {totalCost}</div>
-        <div className="btn-group">
-          <button type="button" onClick={onBack} className="btn btn-secondary">
-            Voltar
+        <div className={styles.totalCost}>
+          <span>Custo Total Estimado</span>
+          <strong>R$ {totalCost}</strong>
+        </div>
+        <div className={styles.buttonGroup}>
+          <button
+            type="button"
+            onClick={onBack}
+            className={styles.backButton}>
+            Cancelar
           </button>
           <button
             type="submit"
             disabled={isLoading}
-            className="btn btn-success"
-          >
-            {isLoading ? "A processar..." : "Confirmar Compra"}
+            className={styles.confirmButton}>
+            {isLoading ? "Enviando Ordem..." : "Confirmar Compra"}
           </button>
         </div>
       </form>
       {message && (
         <p
           className={`${styles.formMessage} ${
-            isSuccess ? styles.textSuccesss : styles.textDanger
-          }`}
-        >
+            isSuccess ? styles.textSuccess : styles.textDanger
+          }`}>
           {message}
         </p>
       )}

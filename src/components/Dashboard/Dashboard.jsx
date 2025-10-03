@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Dashboard.module.css";
 // import styles from "Dashboard.module.css";
-function Dashboard({ userPortfolio, currentUser }) {
+function Dashboard({ userPortfolio, currentUser, gameDate }) {
   const currentPortfolioValue = Object.values(userPortfolio.holdings).reduce(
     (acc, holding) => acc + holding.price * holding.quantity,
     0
@@ -62,9 +62,21 @@ function Dashboard({ userPortfolio, currentUser }) {
       </div>
       <div className={styles.dashboardGrid}>
         <div className={styles.dashboardCard}>
+          <h3>Data do Jogo</h3>
+          <p className={styles.date}>
+            {gameDate ? `Semana ${gameDate.week}, Dia ${gameDate.day}` : 'Carregando...'}
+          </p>
+        </div>
+        <div className={styles.dashboardCard}>
           <h3>Capital Disponível</h3>
           <p className={styles.balance}>
             R$ {userPortfolio.balance.toFixed(2)}
+          </p>
+        </div>
+        <div className={styles.dashboardCard}>
+          <h3>Dívida Total</h3>
+          <p className={styles.debt}>
+            R$ {userPortfolio.debt.toFixed(2)}
           </p>
         </div>
         <div className={styles.dashboardCard}>

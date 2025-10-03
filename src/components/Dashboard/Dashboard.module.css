@@ -60,6 +60,15 @@
   color: #bda27e !important; /* Dourado */
 }
 
+.date {
+  color: #34495e !important;
+  font-size: 1.5rem !important;
+}
+
+.debt {
+  color: #c0392b !important;
+}
+
 .tableContainer {
   grid-column: 1 / -1;
   margin-top: 2rem;
@@ -133,8 +142,8 @@
   color: #2c3e50;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .dashboardGrid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
 }

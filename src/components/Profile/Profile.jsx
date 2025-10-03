@@ -151,126 +151,132 @@ function Profile({ currentUser, onUpdateUser }) {
   }
 
   return (
-    <div className={styles.profileContainer}>
-      <h2 className={styles.title}>Meu Perfil</h2>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h1>Ficha de Membro</h1>
+        <p>Seus dados no The Investment Game.</p>
+      </div>
 
-      {/* Formulário de Atualização de Nome */}
-      <form onSubmit={handleUpdateProfile} className={styles.formSection}>
-        <div className={styles.inputGroup}>
-          <label>Email</label>
-          <input type="email" value={profileData.email} disabled />
-        </div>
-        <div className={styles.inputGroup}>
-          <label>Nome</label>
-          <div className={styles.inputWrapper}>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              disabled={!isEditing}
-              className={!isEditing ? styles.disabledInput : ""}
-            />
-            {!isEditing && (
+      <div className={styles.formGrid}>
+        {/* Formulário de Atualização de Nome */}
+        <form onSubmit={handleUpdateProfile} className={styles.formSection}>
+          <h3>Dados Pessoais</h3>
+          <div className={styles.inputGroup}>
+            <label>Email</label>
+            <input type="email" value={profileData.email} disabled />
+          </div>
+          <div className={styles.inputGroup}>
+            <label>Nome</label>
+            <div className={styles.inputWrapper}>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={!isEditing}
+                className={!isEditing ? styles.disabledInput : ""}
+              />
+              {!isEditing && (
+                <button
+                  type="button"
+                  className={styles.editButton}
+                  onClick={() => setIsEditing(true)}>
+                  Editar
+                </button>
+              )}
+            </div>
+          </div>
+
+          {profileMessage.text && (
+            <p className={styles.formMessage}>{profileMessage.text}</p>
+          )}
+
+          {isEditing && (
+            <div className={styles.buttonGroup}>
+              <button
+                type="submit"
+                className={styles.saveButton}
+                disabled={isLoadingProfile}>
+                {isLoadingProfile ? "Salvando..." : "Salvar Alterações"}
+              </button>
               <button
                 type="button"
-                className={styles.editButton}
-                onClick={() => setIsEditing(true)}>
-                Editar
+                className={styles.cancelButton}
+                onClick={() => {
+                  setIsEditing(false);
+                  setName(profileData.name);
+                  setProfileMessage({ type: "", text: "" });
+                }}>
+                Cancelar
               </button>
-            )}
-          </div>
-        </div>
+            </div>
+          )}
+        </form>
 
-        {profileMessage.text && (
-          <p className={styles[profileMessage.type]}>{profileMessage.text}</p>
-        )}
-
-        {isEditing && (
-          <div className={styles.buttonGroup}>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={isLoadingProfile}>
-              {isLoadingProfile ? "A guardar..." : "Guardar"}
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() => {
-                setIsEditing(false);
-                setName(profileData.name);
-                setProfileMessage({ type: "", text: "" });
-              }}>
-              Cancelar
-            </button>
+        {/* Formulário de Alteração de Senha */}
+        <form onSubmit={handleUpdatePassword} className={styles.formSection}>
+          <h3>Segurança da Conta</h3>
+          <div className={styles.inputGroup}>
+            <label>Palavra-Chave Atual</label>
+            <div className={styles.inputWrapper}>
+              <input
+                type={showOldPassword ? "text" : "password"}
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className={styles.togglePasswordButton}
+                onClick={() => setShowOldPassword(!showOldPassword)}>
+                {showOldPassword ? "Ocultar" : "Mostrar"}
+              </button>
+            </div>
           </div>
-        )}
-      </form>
-
-      {/* Formulário de Alteração de Senha */}
-      <form onSubmit={handleUpdatePassword} className={styles.formSection}>
-        <h3 className={styles.subtitle}>Alterar Palavra-passe</h3>
-        <div className={styles.inputGroup}>
-          <label>Palavra-passe Antiga</label>
-          <div className={styles.inputWrapper}>
-            <input
-              type={showOldPassword ? "text" : "password"}
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              required
-            />
-            <button
-              type="button"
-              className={styles.togglePasswordButton}
-              onClick={() => setShowOldPassword(!showOldPassword)}>
-              {showOldPassword ? "Ocultar" : "Mostrar"}
-            </button>
+          <div className={styles.inputGroup}>
+            <label>Nova Palavra-Chave</label>
+            <div className={styles.inputWrapper}>
+              <input
+                type={showNewPassword ? "text" : "password"}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className={styles.togglePasswordButton}
+                onClick={() => setShowNewPassword(!showNewPassword)}>
+                {showNewPassword ? "Ocultar" : "Mostrar"}
+              </button>
+            </div>
           </div>
-        </div>
-        <div className={styles.inputGroup}>
-          <label>Nova Palavra-passe</label>
-          <div className={styles.inputWrapper}>
-            <input
-              type={showNewPassword ? "text" : "password"}
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
-            <button
-              type="button"
-              className={styles.togglePasswordButton}
-              onClick={() => setShowNewPassword(!showNewPassword)}>
-              {showNewPassword ? "Ocultar" : "Mostrar"}
-            </button>
+          <div className={styles.inputGroup}>
+            <label>Confirmação da Nova Palavra-Chave</label>
+            <div className={styles.inputWrapper}>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className={styles.togglePasswordButton}
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                {showConfirmPassword ? "Ocultar" : "Mostrar"}
+              </button>
+            </div>
           </div>
-        </div>
-        <div className={styles.inputGroup}>
-          <label>Confirmar Nova Palavra-passe</label>
-          <div className={styles.inputWrapper}>
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-            <button
-              type="button"
-              className={styles.togglePasswordButton}
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-              {showConfirmPassword ? "Ocultar" : "Mostrar"}
-            </button>
-          </div>
-        </div>
-        {passwordMessage.text && (
-          <p className={styles[passwordMessage.type]}>{passwordMessage.text}</p>
-        )}
-        <button
-          type="submit"
-          className="btn btn-danger"
-          disabled={isLoadingPassword}>
-          {isLoadingPassword ? "A alterar..." : "Alterar Palavra-passe"}
-        </button>
-      </form>
+          {passwordMessage.text && (
+            <p className={styles.formMessage}>{passwordMessage.text}</p>
+          )}
+          <button
+            type="submit"
+            className={styles.saveButton}
+            disabled={isLoadingPassword}>
+            {isLoadingPassword ? "Atualizando..." : "Atualizar Senha"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
