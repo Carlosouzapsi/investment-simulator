@@ -369,10 +369,7 @@ function App() {
             />
           }
         />
-        <Route
-          path="/bank"
-          element={<Bank onLoanRequest={handleLoan} />}
-        />
+        <Route path="/bank" element={<Bank onLoanRequest={handleLoan} />} />
       </Route>
     </Routes>
   );
