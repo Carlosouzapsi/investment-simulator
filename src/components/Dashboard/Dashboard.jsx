@@ -29,20 +29,22 @@ function Dashboard({ userPortfolio, currentUser }) {
       );
     }
     return (
-      <div className="table-container">
-        <table className="table">
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
           <thead>
             <tr>
               <th>Ativo</th>
               <th>Quantidade</th>
+              <th>Preço Médio</th>
               <th>Valor Total</th>
             </tr>
           </thead>
           <tbody>
             {holdingsArray.map((holding, index) => (
               <tr key={index}>
-                <td className="font-medium">{holding.ticker}</td>
+                <td className={styles.tickerCell}>{holding.ticker}</td>
                 <td>{holding.quantity}</td>
+                <td>R$ {(holding.totalCost / holding.quantity).toFixed(2)}</td>
                 <td>R$ {(holding.price * holding.quantity).toFixed(2)}</td>
               </tr>
             ))}
@@ -54,30 +56,29 @@ function Dashboard({ userPortfolio, currentUser }) {
 
   return (
     <div className={styles.container}>
-      {/* Mensagem de boas-vindas personalizada */}
-      <h2 className={styles.welcomeMessage}>
-        Olá, {currentUser ? currentUser.name : "Investidor"}!
-      </h2>
+      <div className={styles.header}>
+        <h1>Painel do Membro</h1>
+        <p>Bem-vindo de volta, {currentUser ? currentUser.name : "Investidor"}.</p>
+      </div>
       <div className={styles.dashboardGrid}>
         <div className={styles.dashboardCard}>
-          <h3>Saldo Atual</h3>
-          <p className={styles.textPrimary}>
+          <h3>Capital Disponível</h3>
+          <p className={styles.balance}>
             R$ {userPortfolio.balance.toFixed(2)}
           </p>
         </div>
         <div className={styles.dashboardCard}>
-          <h3>Retorno Total da Carteira</h3>
+          <h3>Resultado da Carteira</h3>
           <p className={returnColorClass}>
-            {returnSign} R$ {totalReturn.toFixed(2)} (
-            {returnPercentage.toFixed(2)}%)
+            {returnSign} R$ {totalReturn.toFixed(2)} ({returnPercentage.toFixed(2)}%)
           </p>
         </div>
         <div className={styles.dashboardCard}>
-          <h3>Ativos na Carteira</h3>
+          <h3>Posições Abertas</h3>
           <p>{Object.keys(userPortfolio.holdings).length}</p>
         </div>
         <div className={styles.tableContainer}>
-          <h3>Resumo da Carteira</h3>
+          <h3>Relatório de Ativos</h3>
           {renderHoldingsSummary()}
         </div>
       </div>

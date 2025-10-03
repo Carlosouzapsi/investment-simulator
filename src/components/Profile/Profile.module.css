@@ -1,8 +1,4 @@
 .profileContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
   max-width: 600px;
   margin: 0 auto;
 }
@@ -12,35 +8,136 @@
   font-weight: bold;
   color: #2d3748;
   margin-bottom: 2rem;
+  text-align: center;
 }
 
-.card {
+.subtitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #4a5568;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 2rem;
+}
+
+.formSection {
   background-color: #ffffff;
   padding: 2rem;
   border-radius: 0.75rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  width: 100%;
+  margin-bottom: 2rem;
 }
 
-.infoGroup {
-  display: flex;
-  flex-direction: column;
+.inputGroup {
   margin-bottom: 1.5rem;
 }
 
-.infoGroup:last-child {
-  margin-bottom: 0;
-}
-
-.infoLabel {
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin-bottom: 0.25rem;
+.inputGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
   font-weight: 600;
+  color: #4a5568;
 }
 
-.infoValue {
-  font-size: 1.125rem;
-  color: #1a202c;
+.inputGroup input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background-color: #f9fafb;
+  box-sizing: border-box; /* Garante que o padding não aumente a largura */
+}
+
+.inputGroup input:disabled {
+  background-color: #e5e7eb;
+  cursor: not-allowed;
+  color: #6b7280;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.success {
+  color: #10b981;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.error {
+  color: #ef4444;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.disabledInput {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+/* --- Correção Definitiva com Flexbox --- */
+.inputWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.inputWrapper input {
+  flex-grow: 1;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.editButton {
+  /* Resetando estilos do .btn global */
+  all: unset; 
+  box-sizing: border-box;
+
+  /* Estilos específicos para o botão editar */
+  padding: 0.75rem 1rem;
+  background-color: #e5e7eb;
+  border: 1px solid #d1d5db;
+  border-left: none;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  cursor: pointer;
+  color: #374151;
+  font-weight: 600;
+  white-space: nowrap;
+  height: 44px; /* Altura para corresponder ao input */
+  display: inline-flex;
+  align-items: center;
+}
+
+.editButton:hover {
+  background-color: #d1d5db;
+}
+
+.togglePasswordButton {
+  /* Resetando estilos do .btn global */
+  all: unset; 
+  box-sizing: border-box;
+
+  /* Estilos específicos para o botão de senha */
+  padding: 0.75rem 1rem;
+  background-color: #e5e7eb;
+  border: 1px solid #d1d5db;
+  border-left: none;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  cursor: pointer;
+  color: #374151;
+  font-weight: 600;
+  white-space: nowrap;
+  height: 44px; /* Altura para corresponder ao input */
+  display: inline-flex;
+  align-items: center;
+}
+
+.togglePasswordButton:hover {
+  background-color: #d1d5db;
 }

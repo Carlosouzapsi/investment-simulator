@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Login.module.css";
-import { useNavigate } from "react-router-dom"; // 1. Importar useNavigate
+import { useNavigate, Link } from "react-router-dom"; // 1. Importar useNavigate e Link
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -59,50 +59,63 @@ function Login({ onLogin }) {
   };
 
   return (
-    <div className={styles.formContainer}>
-      <h2>Acesse sua conta</h2>
-      <form onSubmit={handleSubmit} className="form">
-        <div className={styles.formGroup}>
-          <label className={styles.formLabel} htmlFor="email">
-            Email
-          </label>
-          <input
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={styles.formInput}
-          />
-        </div>
-        <div>
-          <label className={styles.formLabel} htmlFor="password">
-            Senha
-          </label>
-          <input
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={styles.formInput}
-          />
-        </div>
-        {error && (
-          <p className={`${styles.formMessage} ${styles.textDanger}`}>
-            {error}
+    <div className={styles.loginPage}>
+      <div className={styles.infoPanel}>
+        <div className={styles.infoContent}>
+          <div className={styles.seal}>
+            <span className={styles.sealIcon}>★</span>
+            THE INVESTMENT GAME
+          </div>
+          <p className={styles.quote}>
+            "O maior risco de todos é não correr nenhum risco."
           </p>
-        )}
-        <button
-          type="submit"
-          className="btn btn-primary btn-full"
-          style={{ marginTop: "1rem" }}>
-          Entrar
-          {isLoading ? "A processar..." : "Entrar"}
-        </button>
-        <p
-          className={`${styles.textCenter} ${styles.textMuted}`}
-          style={{ marginTop: "1rem", fontSize: "0.875rem" }}>
-          Use 'simulador@email.com' para email e '123' para a senha. Para usar o
-          usuário mockado
+          <span className={styles.author}>- Um Sábio Investidor</span>
+        </div>
+      </div>
+      <div className={styles.formContainer}>
+        <div className={styles.header}>
+          <h1>Acesso ao Clube</h1>
+          <p>Edição de Luxo</p>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel} htmlFor="email">
+              Email do Jogador
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={styles.formInput}
+              required
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel} htmlFor="password">
+              Senha
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={styles.formInput}
+              required
+            />
+          </div>
+          {error && <p className={styles.textDanger}>{error}</p>}
+          <button
+            type="submit"
+            className={styles.submitButton}
+            disabled={isLoading}>
+            {isLoading ? "Validando..." : "Iniciar Jogo"}
+          </button>
+        </form>
+        <p className={styles.signUpLink}>
+          Primeira vez aqui? <Link to="/signup">Crie sua conta</Link>
         </p>
-      </form>
+      </div>
     </div>
   );
 }

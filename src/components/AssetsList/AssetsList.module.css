@@ -19,14 +19,67 @@
   justify-content: center;
 }
 
-.actionsCell {
-  display: flex;
-  gap: 0.5rem;
-}
-
 .textSuccess {
   color: #10b981;
 }
 .textDanger {
   color: #ef4444;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow-x: auto; /* Para responsividade em telas pequenas */
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.table th,
+.table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.table thead {
+  background-color: #f7fafc;
+  color: #4a5568;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.table tbody tr:hover {
+  background-color: #f0f4f8;
+}
+
+.tickerCell {
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.priceCell {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.actionsHeader {
+  text-align: right;
+}
+
+.actionsCell {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }

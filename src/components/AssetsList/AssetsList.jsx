@@ -105,15 +105,16 @@ function AssetsList({ onSelectAsset, onSelectAssetForDetails }) {
           Fundos Imobiliários
         </button>
       </div>
-      <div className="table-container">
-        <table className="table">
+      <div className={styles.tableContainer}>
+        <table className={styles.table}>
           <thead>
             <tr>
               <th>Ticker</th>
+              <th>Nome</th>
               <th>Tipo</th>
               <th>Preço (R$)</th>
               <th>Abertura (R$)</th>
-              <th>Ações</th>
+              <th className={styles.actionsHeader}>Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -129,11 +130,11 @@ function AssetsList({ onSelectAsset, onSelectAssetForDetails }) {
               }
 
               return (
-                <tr className={asset.id}>
-                  <td className="font-medium">{asset.ticker}</td>
+                <tr key={asset.id}>
+                  <td className={styles.tickerCell}>{asset.ticker}</td>
                   <td>{asset.name}</td>
                   <td>{asset.type}</td>
-                  <td className={`${priceClass} font-bold`}>
+                  <td className={`${priceClass} ${styles.priceCell}`}>
                     {asset.price.toFixed(2)}
                     {arrowDirection && <ArrowIcon direction={arrowDirection} />}
                   </td>

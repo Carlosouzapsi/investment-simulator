@@ -1,26 +1,31 @@
 import React from "react";
 import styles from "./Portfolio.module.css";
 
-function Portfolio({ userPortfolio, onBuy, onSell, onBack }) {
+function Portfolio({ userPortfolio, onBuy, onSell }) {
   const holdingsArray = Object.values(userPortfolio.holdings);
 
   return (
     <div className={styles.container}>
-      <h2>Minha Carteira</h2>
+      <div className={styles.header}>
+        <h1>Portfólio do Membro</h1>
+        <p>Sua posição atual no mercado.</p>
+      </div>
       {holdingsArray.length === 0 ? (
-        <p className={`${styles.textCenter} ${styles.textMuted}`}>
-          Ainda não possui ativos na sua carteira.
+        <p className={styles.textMuted}>
+          Seu portfólio está vazio. Visite o mercado para começar a investir.
         </p>
       ) : (
-        <div className="table-container">
-          <table className="table">
+        <div className={styles.tableContainer}>
+          <table className={styles.table}>
             <thead>
               <tr>
-                <th>Ticker</th>
+                <th>Ativo</th>
                 <th>Nome</th>
-                <th>Preço Médio (R$)</th>
-                <th>L/P (R$)</th>
-                <th>Ações</th>
+                <th>Quantidade</th>
+                <th>Preço Médio</th>
+                <th>Valor Atual</th>
+                <th>Resultado (L/P)</th>
+                <th className={styles.actionsHeader}>Operar</th>
               </tr>
             </thead>
             <tbody>
@@ -28,33 +33,27 @@ function Portfolio({ userPortfolio, onBuy, onSell, onBack }) {
                 const totalValue = holding.price * holding.quantity;
                 const profitLoss = totalValue - holding.totalCost;
                 const profitLossClass =
-                  profitLoss >= 0 ? styles.tesxtSuccess : styles.textDanger;
+                  profitLoss >= 0 ? styles.textSuccess : styles.textDanger;
                 return (
                   <tr key={holding.ticker}>
-                    <td className="font-medium">{holding.ticker}</td>
+                    <td className={styles.tickerCell}>{holding.ticker}</td>
                     <td>{holding.name}</td>
                     <td>{holding.quantity}</td>
-                    <td>{(holding.totalCost / holding.quantity).toFixed(2)}</td>
-                    <td>{totalValue.toFixed(2)}</td>
-                    <td className={`${profitLossClass} font-bold`}>
+                    <td>R$ {(holding.totalCost / holding.quantity).toFixed(2)}</td>
+                    <td>R$ {totalValue.toFixed(2)}</td>
+                    <td className={`${profitLossClass} ${styles.priceCell}`}>
                       {profitLoss.toFixed(2)}
-                      <div className={styles.actiosCell}>
+                    </td>
+                    <td>
+                      <div className={styles.actionsCell}>
                         <button
                           onClick={() => onBuy(holding)}
-                          className="btn btn-primary"
-                          style={{
-                            padding: "0.25rem 0.5rem",
-                            fontSize: "0.75rem",
-                          }}>
+                          className={styles.buyButton}>
                           Comprar
                         </button>
                         <button
                           onClick={() => onSell(holding)}
-                          className="btn btn-danger"
-                          style={{
-                            padding: "0.25rem 0.5rem",
-                            fontSize: "0.75rem",
-                          }}>
+                          className={styles.sellButton}>
                           Vender
                         </button>
                       </div>
@@ -66,11 +65,6 @@ function Portfolio({ userPortfolio, onBuy, onSell, onBack }) {
           </table>
         </div>
       )}
-      <button
-        onClick={onBack}
-        className={`btn btn-secondary ${styles.backButton}`}>
-        Voltar para o Dashboard
-      </button>
     </div>
   );
 }

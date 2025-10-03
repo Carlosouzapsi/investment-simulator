@@ -12,8 +12,8 @@ function TransactionHistory({ transactionHistory }) {
           Nenhuma transação registada ainda.
         </p>
       ) : (
-        <div className="table-container">
-          <table className="table">
+        <div className={styles.tableContainer}>
+          <table className={styles.table}>
             <thead>
               <tr>
                 <th>Data</th>
@@ -27,16 +27,16 @@ function TransactionHistory({ transactionHistory }) {
             <tbody>
               {sortedHistory.map((tx, index) => (
                 <tr key={index}>
-                  <td>{tx.date}</td>
+                  <td>{new Date(tx.date).toLocaleString("pt-BR")}</td>
                   <td
-                    className={`font-bold ${
+                    className={
                       tx.type === "Compra"
                         ? styles.textSuccess
                         : styles.textDanger
-                    }`}>
+                    }>
                     {tx.type}
                   </td>
-                  <td className="font-medium">{tx.asset}</td>
+                  <td className={styles.tickerCell}>{tx.asset}</td>
                   <td>{tx.quantity}</td>
                   <td>{tx.price.toFixed(2)}</td>
                   <td>{tx.cost.toFixed(2)}</td>

@@ -2,43 +2,102 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f7fafc;
-  font-family: "Inter", sans-serif;
+  background-color: #f4f1ea; /* Fundo de papel antigo */
+  font-family: 'Lato', sans-serif;
 }
+
 .appNav {
-  background-color: #ffffff;
-  padding: 1rem 2rem;
+  background-color: #2c3e50; /* Azul escuro */
+  padding: 0.75rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  border-radius: 0 0 1rem 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 1000;
 }
-.appNav h1 {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #2d3748;
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
 }
+
 .navLinks {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1.5rem;
 }
+
+.navLink {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ecf0f1; /* Branco acinzentado */
+  text-decoration: none;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #bda27e; /* Dourado */
+  transition: width 0.3s ease-in-out;
+}
+
+.navLink:hover,
+.activeLink {
+  color: #ffffff;
+}
+
+.navLink:hover::after,
+.activeLink::after {
+  width: 100%;
+}
+
+.logoutButton {
+  all: unset;
+  box-sizing: border-box;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #bda27e; /* Dourado */
+  background-color: transparent;
+  padding: 0.5rem 1rem;
+  border: 2px solid #bda27e;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.logoutButton:hover {
+  background-color: #bda27e;
+  color: #2c3e50; /* Azul escuro do fundo */
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .appMain {
   flex-grow: 1;
   display: flex;
   justify-content: center;
-  padding: 2rem;
+  padding: 2.5rem;
+  padding-bottom: 100px; /* Espaço para o rodapé fixo */
 }
+
 .mainContentWrapper {
   width: 100%;
   max-width: 1200px;
-  background-color: #ffffff;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  background-color: #fdfdfd;
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
 }

@@ -1,38 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 
-// Componentes importados:
+// Importar Componentes
 import Login from "./components/Login/Login.jsx";
+import SignUp from "./components/SignUp/SignUp.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
-import Portfolio from "./components/Portfolio/Portfolio.jsx";
 import AssetsList from "./components/AssetsList/AssetsList.jsx";
-import AssetsDetails from "./components/AssetsDetails/AssetsDetails.jsx";
 import BuyForm from "./components/BuyForm/BuyForm.jsx";
-import TransactionHistory from "./components/TransactionHistory/TransactionHistory.jsx";
-import styles from "./App.module.css"; // Importa o CSS Module
 import SellForm from "./components/SellForm/SellForm.jsx";
+import TransactionHistory from "./components/TransactionHistory/TransactionHistory.jsx";
+import AssetDetails from "./components/AssetDetails/AssetDetails.jsx";
+import Portfolio from "./components/Portfolio/Portfolio.jsx";
 import Profile from "./components/Profile/Profile.jsx";
-import MainLayout from "./components/MainLayout/MainLayout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
+import MainLayout from "./components/MainLayout/MainLayout.jsx";
+
 function App() {
-  const [currentUser, setCurrentUser] = useState(() => {
-    const savedUser = localStorage.getItem("currentUser");
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
+  const [currentUser, setCurrentUser] = useState(
+    () => JSON.parse(localStorage.getItem("currentUser")) || null
+  );
   const [isLoggedIn, setIsLoggedIn] = useState(!!currentUser);
   const [selectedAsset, setSelectedAsset] = useState(null);
-  const [userPortfolio, setUserPortfolio] = useState(() => {
-    const savedPortfolio = localStorage.getItem("userPortfolio");
-    // Return saved portfolio or default values:
-    return savedPortfolio
-      ? JSON.parse(savedPortfolio)
-      : {
-          balance: 10000.0,
-          holdings: {},
-          transactionHistory: [],
-        };
-  });
-
+  const [userPortfolio, setUserPortfolio] = useState(
+    () =>
+      JSON.parse(localStorage.getItem("userPortfolio")) || {
+        balance: 10000.0,
+        holdings: {},
+        transactionHistory: [],
+      }
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,15 +51,17 @@ function App() {
 
   const handleLogout = () => {
     setCurrentUser(null);
-    setIsLoggedIn(false);
     localStorage.removeItem("userPortfolio");
-    localStorage.removeItem("isLoggedIn");
     setUserPortfolio({
       balance: 10000.0,
       holdings: {},
       transactionHistory: [],
     });
     navigate("/");
+  };
+
+  const handleUpdateUser = (updatedUserData) => {
+    setCurrentUser(updatedUserData);
   };
 
   const handleSelectAsset = (asset) => {
@@ -78,7 +76,7 @@ function App() {
 
   const handleSelectAssetForDetails = (asset) => {
     setSelectedAsset(asset);
-    navigate("details");
+    navigate("/details");
   };
 
   const handleBuyConfirm = (asset, quantity) => {
@@ -87,6 +85,7 @@ function App() {
       const newBalance = userPortfolio.balance - cost;
       const newHoldings = { ...userPortfolio.holdings };
       const existingHolding = newHoldings[asset.ticker];
+
       if (existingHolding) {
         existingHolding.quantity += quantity;
         existingHolding.totalCost += cost;
@@ -116,7 +115,7 @@ function App() {
         ],
       });
 
-      navigate("dashboard");
+      navigate("/dashboard");
       return true;
     }
     return false;
@@ -158,7 +157,7 @@ function App() {
         ],
       });
 
-      navigate("portfolio");
+      navigate("/portfolio");
       return true;
     }
     return false;
@@ -166,9 +165,8 @@ function App() {
 
   return (
     <Routes>
-      {/* Rota pública de login */}
       <Route path="/" element={<Login onLogin={handleLogin} />} />
-      {/* Rotas Protegidas dentro do Layout Principal */}
+      <Route path="/signup" element={<SignUp />} />
       <Route
         element={
           <ProtectedRoute isLoggedIn={isLoggedIn}>
@@ -181,6 +179,71 @@ function App() {
             <Dashboard
               userPortfolio={userPortfolio}
               currentUser={currentUser}
+            />
+          }
+        />
+        <Route
+          path="/assets"
+          element={
+            <AssetsList
+              onSelectAsset={handleSelectAsset}
+              onSelectAssetForDetails={handleSelectAssetForDetails}
+            />
+          }
+        />
+        <Route
+          path="/portfolio"
+          element={
+            <Portfolio
+              userPortfolio={userPortfolio}
+              onBuy={handleSelectAsset}
+              onSell={handleSelectAssetForSell}
+            />
+          }
+        />
+        <Route
+          path="/history"
+          element={
+            <TransactionHistory
+              transactionHistory={userPortfolio.transactionHistory}
+            />
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <Profile
+              currentUser={currentUser}
+              onUpdateUser={handleUpdateUser}
+            />
+          }
+        />
+        <Route
+          path="/buy"
+          element={
+            <BuyForm
+              asset={selectedAsset}
+              onBuyConfirm={handleBuyConfirm}
+              onBack={() => navigate("/assets")}
+            />
+          }
+        />
+        <Route
+          path="/sell"
+          element={
+            <SellForm
+              asset={selectedAsset}
+              onSellConfirm={handleSellConfirm}
+              onBack={() => navigate("/portfolio")}
+            />
+          }
+        />
+        <Route
+          path="/details"
+          element={
+            <AssetDetails
+              asset={selectedAsset}
+              onBack={() => navigate("/assets")}
             />
           }
         />

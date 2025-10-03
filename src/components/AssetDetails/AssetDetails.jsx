@@ -1,8 +1,8 @@
 import React from "react";
-import styles from "./AssetsDetails.module.css";
+import styles from "./AssetDetails.module.css";
 import AssetChart from "../AssetChart/AssertChart";
 
-function AssetsDetails({ asset, onBack }) {
+function AssetDetails({ asset, onBack }) {
   if (!asset) {
     return <div className={styles.container}>Nenhum ativo selecionado</div>;
   }
@@ -47,4 +47,4 @@ function AssetsDetails({ asset, onBack }) {
   );
 }
 
-export default AssetsDetails;
+export default AssetDetails;
