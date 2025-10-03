@@ -66,8 +66,9 @@ function Dashboard({ userPortfolio, currentUser, gameDate }) {
         <div className={styles.dashboardCard}>
           <h3>Data do Jogo</h3>
           <p className={styles.date}>
+            {/* ALTERAÇÃO AQUI: Adicionado gameDate.month */}
             {gameDate
-              ? `Semana ${gameDate.week}, Dia ${gameDate.day}`
+              ? `Mês ${gameDate.month}, Semana ${gameDate.week}, Dia ${gameDate.day}`
               : "Carregando..."}
           </p>
         </div>
@@ -79,7 +80,9 @@ function Dashboard({ userPortfolio, currentUser, gameDate }) {
         </div>
         <div className={styles.dashboardCard}>
           <h3>Dívida Total</h3>
-          {/* <p className={styles.debt}>R$ {userPortfolio.debt.toFixed(2)}</p> */}
+          <p className={styles.debt}>
+            R$ {(userPortfolio.debt || 0).toFixed(2)}
+          </p>
         </div>
         <div className={styles.dashboardCard}>
           <h3>Resultado da Carteira</h3>

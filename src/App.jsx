@@ -22,16 +22,19 @@ function App() {
   );
   const [isLoggedIn, setIsLoggedIn] = useState(!!currentUser);
   const [selectedAsset, setSelectedAsset] = useState(null);
-  const [userPortfolio, setUserPortfolio] = useState(
-    () =>
-      JSON.parse(localStorage.getItem("userPortfolio")) || {
-        balance: 10000.0,
-        holdings: {},
-        transactionHistory: [],
-        debt: 0, // Dívida total
-        interestRate: 0, // Taxa de juros média
-      }
-  );
+  const [userPortfolio, setUserPortfolio] = useState(() => {
+    // CORREÇÃO: Garante que o estado inicial tenha todas as propriedades
+    const storedPortfolio = JSON.parse(localStorage.getItem("userPortfolio"));
+    const defaultPortfolio = {
+      balance: 10000.0,
+      holdings: {},
+      transactionHistory: [],
+      debt: 0,
+      interestRate: 0,
+    };
+    // Combina o portfólio guardado com o padrão para evitar propriedades em falta
+    return { ...defaultPortfolio, ...storedPortfolio };
+  });
   const [gameDate, setGameDate] = useState({ day: 1, week: 1, month: 1 });
   const navigate = useNavigate();
 
@@ -79,7 +82,7 @@ function App() {
         ],
       }));
     }
-  }, [gameDate.day]);
+  }, [gameDate.day, userPortfolio.debt, userPortfolio.interestRate]);
 
   // Pagamento de Proventos e Dividendos
   useEffect(() => {
@@ -122,7 +125,7 @@ function App() {
         transactionHistory: [...prev.transactionHistory, ...newTransactions],
       }));
     }
-  }, [gameDate.month]);
+  }, [gameDate.day, gameDate.week, gameDate.month, userPortfolio.holdings]);
 
   useEffect(() => {
     localStorage.setItem("userPortfolio", JSON.stringify(userPortfolio));
@@ -145,10 +148,13 @@ function App() {
   const handleLogout = () => {
     setCurrentUser(null);
     localStorage.removeItem("userPortfolio");
+    // CORREÇÃO: Redefine o estado para a sua forma completa
     setUserPortfolio({
       balance: 10000.0,
       holdings: {},
       transactionHistory: [],
+      debt: 0,
+      interestRate: 0,
     });
     navigate("/");
   };
@@ -178,6 +184,30 @@ function App() {
             quantity: 1,
             price: amount,
             cost: amount,
+            date: new Date().toISOString(),
+          },
+        ],
+      };
+    });
+  };
+
+  const handleDebtRepayment = (amount) => {
+    setUserPortfolio((prev) => {
+      const repaymentAmount = Math.min(amount, prev.debt);
+      if (repaymentAmount <= 0 || prev.balance < repaymentAmount) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        balance: prev.balance - repaymentAmount,
+        debt: prev.debt - repaymentAmount,
+        transactionHistory: [
+          ...prev.transactionHistory,
+          {
+            type: "Pagamento Dívida",
+            asset: "Amortização de Empréstimo",
+            cost: -repaymentAmount,
             date: new Date().toISOString(),
           },
         ],
@@ -228,6 +258,7 @@ function App() {
       };
 
       setUserPortfolio({
+        ...userPortfolio,
         balance: newBalance,
         holdings: newHoldings,
         transactionHistory: [
@@ -270,6 +301,7 @@ function App() {
       };
 
       setUserPortfolio({
+        ...userPortfolio,
         balance: newBalance,
         holdings: newHoldings,
         transactionHistory: [
@@ -369,7 +401,16 @@ function App() {
             />
           }
         />
-        <Route path="/bank" element={<Bank onLoanRequest={handleLoan} />} />
+        <Route
+          path="/bank"
+          element={
+            <Bank
+              userPortfolio={userPortfolio}
+              onLoanRequest={handleLoan}
+              onDebtRepayment={handleDebtRepayment}
+            />
+          }
+        />
       </Route>
     </Routes>
   );
